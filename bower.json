@@ -1,0 +1,19 @@
+{
+  "name": "unitwise.org",
+  "version": "0.0.0",
+  "authors": [
+    "Josh W Lewis <josh.w.lewis@gmail.com>"
+  ],
+  "main": "build/index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize-css": "~2.1.3"
+  }
+}

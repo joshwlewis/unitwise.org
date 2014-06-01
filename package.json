@@ -1,0 +1,23 @@
+{
+  "name": "unitwise.org",
+  "version": "0.0.0",
+  "description": "Static site for unitwise.org",
+  "main": "gulpfile.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshwlewis/unitwise.org"
+  },
+  "author": "Josh W Lewis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joshwlewis/unitwise.org/issues"
+  },
+  "devDependencies": {
+    "gulp": "~3.2.4",
+    "gulp-sass": "~0.2.3",
+    "gulp-coffee": "~1.2.5",
+    "gulp-jade": "~0.3.0",
+    "gulp-util": "~2.2.6"
+  }
+}
