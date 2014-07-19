@@ -5,25 +5,22 @@ html.no-js(lang='en')
     meta(charset="utf-8")
     meta(name="description", content="description")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    title #{title}
+    title Unitwise - Physical Quantities and Units of Measurement Calculator
 
-    link(rel='stylesheet', href='styles/app.css')
+    link(rel='stylesheet', href='styles/application.css')
 
-    script(type='text/javascript', src='scripts/modernizr.js')
-    script(type='text/javascript', src='scripts/jquery.js')
-    script(type='text/javascript', src='scripts/lodash.js')
-    script(type='text/javascript', src='scripts/backbone.js')
-    script(type='text/javascript', src='scripts/backbone.marionette.js')
-    script(type='text/javascript', src='scripts/extensions.js')
-    script(type='text/javascript', src='scripts/templates.js')
     script(type="text/javascript", src="scripts/application.js")
 
   body
-    <!--[if lt IE 8]>
-    p.browsehappy
-      | You are using an <strong>outdated</strong> browser.
-      | Please <a href="http://browsehappy.com/">upgrade your browser</a>
-      | to improve your experience.
-    <![endif]-->
+    .container
+      h1 Unitwise
+      p.lead Physical Quanitites and Units of Measurement Calculator
+      hr
+      <!--[if lt IE 8]>
+      p.browsehappy
+        | You are using an <strong>outdated</strong> browser.
+        | Please <a href="http://browsehappy.com/">upgrade your browser</a>
+        | to improve your experience.
+      <![endif]-->
 
-    block content
+      block content

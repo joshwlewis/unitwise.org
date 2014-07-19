@@ -1,4 +1,6 @@
-.medium-6.columns
-  input(type='number' placeholder='42' name='value')
-.medium-6.columns
-  input(type='text' placeholder='meter' name='name')
+.form-group
+  .col-sm-5.value-container
+    label.control-label(for='value') Magnitude
+    input.form-control(type='number' name='value' value='{{ value }}'
+                      required='required')
+  .col-sm-7.unit-container

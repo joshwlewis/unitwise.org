@@ -14,10 +14,12 @@
     "tests"
   ],
   "dependencies": {
-    "foundation": "~5.2.3",
     "backbone": "~1.1.2",
     "lodash": "~2.4.1",
     "jquery": "~2.1.1",
-    "backbone.marionette": "~1.8.7"
+    "backbone.marionette": "~1.8.7",
+    "bootstrap": "~3.2.0",
+    "modernizr": "~2.8.3",
+    "selectize": "~0.10.1"
   }
 }
