@@ -1,14 +1,13 @@
 .form-group
-  .col-md-5.left-container
-  .col-md-2.operator-container
-    .form-group
-      .col-sm-12
-        label.control-label(for='operator') Operator
-        select.form-control(name='operator')
-          option(value='convert_to') &#8658;
-          option(value='+') +
-          option(value='-') -
-          option(value='*') *
-          option(value='/') /
-  .col-md-5.right-container
+  .col-xs-9.col-xs-offset-3.left-container
+.form-group
+  .col-xs-3.operator-container
+    label.control-label(for='operator') Operator
+    select.form-control(name='operator')
+      option(value='convert_to') &#8658;
+      option(value='+') +
+      option(value='-') -
+      option(value='*') *
+      option(value='/') /
+  .col-xs-9.right-container
 .result-container

@@ -1,10 +1,11 @@
 class Unitwise.MeasurementView extends Marionette.Layout
   template:  'measurement'
+  className: 'row'
   regions:
-    unitContainer:  '.unit-container'
+    unitContainer:  '.unit-container:first'
 
   ui:
-    value: "input[name='value']"
+    value: "input[name='value']:first"
 
   onShow: ->
     @renderUnit()
@@ -13,7 +14,7 @@ class Unitwise.MeasurementView extends Marionette.Layout
     "input @ui.value": "_onValueChanged"
 
   renderUnit: ->
-    unitView = new Unitwise.UnitView(model: @model.unit)
+    unitView = new Unitwise.UnitView(model: @model.unit, dim: @options.dim)
     @unitContainer.show(unitView)
 
   _onValueChanged: (evt) ->

@@ -1,7 +1,7 @@
 class Unitwise.UnitView extends Marionette.ItemView
   template:  'unit'
   ui:
-    code: "select[name='code']"
+    code: "select[name='code']:first"
 
   modelEvents:
     "change:code": "selectCode"
@@ -16,7 +16,7 @@ class Unitwise.UnitView extends Marionette.ItemView
       @ui.code.selectize
         valueField:  'code'
         searchField: ['name','code','symbol']
-        options:     Unitwise.units.toJSON()
+        options:     Unitwise.units.withDim(@options.dim)
         render:
           option: @_renderOption
           item:   @_renderOption
@@ -29,7 +29,7 @@ class Unitwise.UnitView extends Marionette.ItemView
 
   updateOptions: ->
     selectize = @ui.code[0].selectize
-    Unitwise.units.toJSON().forEach (opt) ->
+    Unitwise.units.withDim(@options.dim).forEach (opt) ->
       selectize.addOption(opt)
     selectize.refreshOptions(false)
 

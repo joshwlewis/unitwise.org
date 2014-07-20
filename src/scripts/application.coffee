@@ -1,7 +1,7 @@
 Unitwise = new Backbone.Marionette.Application()
 
 Unitwise.addInitializer ->
-  @addRegions main: '#main'
+  @addRegions main: '#unitwise'
 
 Unitwise.addInitializer ->
   class @Controller extends Marionette.Controller

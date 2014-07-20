@@ -2,15 +2,15 @@ class Unitwise.CalculationView extends Marionette.Layout
   template:  'calculation'
 
   regions:
-    leftContainer:   '.left-container'
-    rightContainer:  '.right-container'
-    resultContainer: '.result-container'
+    leftContainer:   '.left-container:first'
+    rightContainer:  '.right-container:first'
+    resultContainer: '.result-container:first'
 
   modelEvents:
     "change": "save"
 
   ui:
-    operator: "select[name='operator']"
+    operator: "select[name='operator']:first"
 
   events:
     'change @ui.operator': 'onUiOperatorChanged'
@@ -28,10 +28,15 @@ class Unitwise.CalculationView extends Marionette.Layout
     @leftContainer.show(leftView)
 
   renderRight: ->
-    if @ui.operator.val() == 'convert_to'
-      rightView  = new Unitwise.UnitView(model: @model.right.unit)
+    dim = if _.contains(['convert_to', '+', '-'], @model.get("operator"))
+      @model.left.unit.get("dim")
     else
-      rightView  = new Unitwise.MeasurementView(model: @model.right)
+      null
+
+    if @ui.operator.val() == 'convert_to'
+      rightView  = new Unitwise.UnitView(model: @model.right.unit, dim: dim)
+    else
+      rightView  = new Unitwise.MeasurementView(model: @model.right, dim: dim)
     @rightContainer.show(rightView)
 
   renderResult: ->
@@ -39,9 +44,10 @@ class Unitwise.CalculationView extends Marionette.Layout
     view = new Unitwise.CalculationView(model: newCalc)
     @resultContainer.show(view)
 
-  save: (args) ->
-    @model.save()
-      .success => @renderResult()
+  save: (model, options) ->
+    unless model.changed.result
+      @model.save()
+        .success => @renderResult()
 
   onUiOperatorChanged: (evt) ->
     @model.set(operator: $(evt.target).val())

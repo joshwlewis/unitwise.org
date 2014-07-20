@@ -7,6 +7,6 @@ class Unitwise.Calculation extends Unitwise.Model
 
   defaults:
     left:     null
-    operator: null
+    operator: 'convert_to'
     right:    null
     result:   null
