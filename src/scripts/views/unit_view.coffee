@@ -15,17 +15,11 @@ class Unitwise.UnitView extends Marionette.ItemView
     unless @selectize
       @ui.code.selectize
         valueField:  'code'
+        labelField:  'description'
         searchField: ['name','code','symbol']
         options:     Unitwise.units.withDim(@options.dim)
-        render:
-          option: @_renderOption
-          item:   @_renderOption
       @selectize = @ui.code[0].selectize
       @listenTo @selectize, 'change', @onUiCodeChange
-
-  _renderOption: (item, esc) ->
-    aliases = _([esc(item.code), item.symbol]).compact().uniq().join(', ')
-    "<div>#{ esc(item.name) } (#{aliases})</div>"
 
   updateOptions: ->
     selectize = @ui.code[0].selectize

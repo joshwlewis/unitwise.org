@@ -4,6 +4,7 @@ class Unitwise.Calculation extends Unitwise.Model
   swabs:
     left:   Unitwise.Measurement
     right:  Unitwise.Measurement
+    result: Unitwise.Measurement
 
   defaults:
     left:     null

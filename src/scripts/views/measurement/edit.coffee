@@ -1,5 +1,5 @@
-class Unitwise.MeasurementView extends Marionette.Layout
-  template:  'measurement'
+class Unitwise.Measurement.Edit extends Marionette.Layout
+  template:  'measurement/edit'
   className: 'row'
   regions:
     unitContainer:  '.unit-container:first'
@@ -11,15 +11,17 @@ class Unitwise.MeasurementView extends Marionette.Layout
     @renderUnit()
 
   events:
-    "input @ui.value": "_onValueChanged"
+    "input @ui.value": "onUiValueChanged"
 
   renderUnit: ->
     unitView = new Unitwise.UnitView(model: @model.unit, dim: @options.dim)
     @unitContainer.show(unitView)
 
-  _onValueChanged: (evt) ->
-    if @valid()
-      @model.set(value: $(evt.target).val())
+  onUiValueChanged: (evt) ->
+    @_OnUiValueChanged ||= (
+      fn = -> @model.set(value: $(evt.target).val()) if @valid()
+      _.throttle(fn, 750))
+    @_OnUiValueChanged(evt)
 
   valid: ->
     if @ui.value[0].checkValidity()

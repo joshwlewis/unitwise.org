@@ -1,5 +1,6 @@
 class Unitwise.CalculationView extends Marionette.Layout
   template:  'calculation'
+  className: 'calculation'
 
   regions:
     leftContainer:   '.left-container:first'
@@ -7,13 +8,19 @@ class Unitwise.CalculationView extends Marionette.Layout
     resultContainer: '.result-container:first'
 
   modelEvents:
-    "change": "save"
+    "change":        "sync"
+    "change:left":   "onModelLeftChanged"
+    "change:result": "renderResult"
 
   ui:
     operator: "select[name='operator']:first"
 
   events:
     'change @ui.operator': 'onUiOperatorChanged'
+
+  initialize: ->
+    super
+    @depth = @options.depth || 0
 
   onRender: ->
     @renderLeft()
@@ -24,7 +31,8 @@ class Unitwise.CalculationView extends Marionette.Layout
     @ui.operator.selectize()
 
   renderLeft: ->
-    leftView = new Unitwise.MeasurementView(model: @model.left)
+    viewClass = if @depth > 0 then Unitwise.Measurement.Show else Unitwise.Measurement.Edit
+    leftView = new viewClass(model: @model.left)
     @leftContainer.show(leftView)
 
   renderRight: ->
@@ -36,19 +44,23 @@ class Unitwise.CalculationView extends Marionette.Layout
     if @ui.operator.val() == 'convert_to'
       rightView  = new Unitwise.UnitView(model: @model.right.unit, dim: dim)
     else
-      rightView  = new Unitwise.MeasurementView(model: @model.right, dim: dim)
+      rightView  = new Unitwise.Measurement.Edit(model: @model.right, dim: dim)
     @rightContainer.show(rightView)
 
   renderResult: ->
-    newCalc = new Unitwise.Calculation(left: _.clone(@model.get 'result'))
-    view = new Unitwise.CalculationView(model: newCalc)
-    @resultContainer.show(view)
+    @resultModel ||= new Unitwise.Calculation()
+    @resultModel.set(left: @model.get("result"))
+    @resultView ||= new Unitwise.CalculationView(model: @resultModel, depth: @depth + 1)
+    @resultContainer.show(@resultView)
 
-  save: (model, options) ->
+  sync: (model, options) ->
     unless model.changed.result
       @model.save()
-        .success => @renderResult()
 
   onUiOperatorChanged: (evt) ->
     @model.set(operator: $(evt.target).val())
     @renderRight()
+
+  onModelLeftChanged: (model, value, options) ->
+    @renderRight() if value.unit
+

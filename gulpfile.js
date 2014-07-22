@@ -7,9 +7,13 @@ var gjade        = require('gulp-jade');
 var gjst         = require('gulp-jst-concat');
 var gless        = require('gulp-less');
 var gmaps        = require('gulp-sourcemaps');
+var gmin         = require('gulp-minify-css');
 var grename      = require('gulp-rename');
 var guglify      = require('gulp-uglify');
 var gutil        = require('gulp-util');
+
+var compress     = !!process.env.COMPRESS
+console.log(compress)
 
 gulp.task('connect', function() {
   gconnect.server({
@@ -34,9 +38,9 @@ var paths = {
               'src/scripts/models/unit.coffee',
               'src/scripts/models/measurement.coffee',
               'src/scripts/models/calculation.coffee',
-              'src/scripts/views/value_picker_view.coffee',
               'src/scripts/views/unit_view.coffee',
-              'src/scripts/views/measurement_view.coffee',
+              'src/scripts/views/measurement/show.coffee',
+              'src/scripts/views/measurement/edit.coffee',
               'src/scripts/views/calculation_view.coffee',
               'src/scripts/collections/*.coffee',
               'tmp/templates.js'
@@ -45,18 +49,18 @@ var paths = {
 
 gulp.task('scripts', function() {
   gulp.src(paths.scripts)
-      .pipe(gmaps.init())
+      .pipe(gif(!compress, gmaps.init()))
       .pipe(gif(/[.]coffee$/, gcoffee({ bare: true }).on('error', function(err) {
             gutil.log(gutil.colors.red(err))
       })))
-      // .pipe(guglify())
       .pipe(gconcat('application.js'))
-      .pipe(gmaps.write())
+      .pipe(gif(compress, guglify()))
+      .pipe(gif(!compress, gmaps.write()))
       .pipe(gulp.dest('build/scripts'))
-      .pipe(gconnect.reload());
+      .pipe(gif(!compress, gconnect.reload()));
 });
 
-// Precompile gjade templates into a JST
+// Precompile jade templates into a JST
 gulp.task('templates', function(){
   gulp.src(['src/templates/**/*.jade'])
     .pipe(gjade().on('error', function (err) {
@@ -68,11 +72,12 @@ gulp.task('templates', function(){
 
 gulp.task('styles', function() {
   gulp.src(['src/styles/**/*.{css,less}'])
-      .pipe(gmaps.init())
+      .pipe(gif(!compress, gmaps.init()))
       .pipe(gless().on('error', function(err){
         gutil.log(gutil.colors.red(err.message))
       }))
-      .pipe(gmaps.write())
+      .pipe(gif(compress, gmin({keepSpecialComments: false})))
+      .pipe(gif(!compress, gmaps.write()))
       .pipe(gulp.dest('build/styles'))
       .pipe(gconnect.reload());
 });

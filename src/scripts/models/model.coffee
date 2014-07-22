@@ -4,6 +4,7 @@ class Unitwise.Model extends Backbone.Model
 
   constructor: (attrs, opts) ->
     super
+    @throttledSet = _.throttle(@set, 500)
     @baws = opts?.baws
     for swab_key, swab_klass of @swabs
       attrs ||= {}
