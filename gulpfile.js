@@ -8,19 +8,11 @@ var gjst         = require('gulp-jst-concat');
 var gless        = require('gulp-less');
 var gmaps        = require('gulp-sourcemaps');
 var gmin         = require('gulp-minify-css');
+var gpages       = require("gulp-gh-pages");
 var grename      = require('gulp-rename');
+var gdel         = require('del');
 var guglify      = require('gulp-uglify');
 var gutil        = require('gulp-util');
-
-var compress     = !!process.env.COMPRESS
-console.log(compress)
-
-gulp.task('connect', function() {
-  gconnect.server({
-    root: 'build',
-    livereload: true
-  });
-});
 
 var paths = {
   scripts: [
@@ -47,17 +39,27 @@ var paths = {
             ]
 }
 
+gulp.task('connect', function() {
+  gconnect.server({
+    root: 'build',
+    livereload: true
+  });
+});
+
+gulp.task('clean', function() {
+  gdel(['build/**/*', 'dist/**/*'], function(){})
+});
+
 gulp.task('scripts', function() {
   gulp.src(paths.scripts)
-      .pipe(gif(!compress, gmaps.init()))
+      .pipe(gmaps.init())
       .pipe(gif(/[.]coffee$/, gcoffee({ bare: true }).on('error', function(err) {
             gutil.log(gutil.colors.red(err))
       })))
       .pipe(gconcat('application.js'))
-      .pipe(gif(compress, guglify()))
-      .pipe(gif(!compress, gmaps.write()))
+      .pipe(gmaps.write())
       .pipe(gulp.dest('build/scripts'))
-      .pipe(gif(!compress, gconnect.reload()));
+      .pipe(gconnect.reload());
 });
 
 // Precompile jade templates into a JST
@@ -72,12 +74,11 @@ gulp.task('templates', function(){
 
 gulp.task('styles', function() {
   gulp.src(['src/styles/**/*.{css,less}'])
-      .pipe(gif(!compress, gmaps.init()))
+      .pipe(gmaps.init())
       .pipe(gless().on('error', function(err){
         gutil.log(gutil.colors.red(err.message))
       }))
-      .pipe(gif(compress, gmin({keepSpecialComments: false})))
-      .pipe(gif(!compress, gmaps.write()))
+      .pipe(gmaps.write())
       .pipe(gulp.dest('build/styles'))
       .pipe(gconnect.reload());
 });
@@ -91,7 +92,7 @@ gulp.task('content', function() {
       .pipe(gconnect.reload());
 });
 
-gulp.task('build',['content','styles','templates','scripts']);
+gulp.task('build',['clean','content','styles','templates','scripts']);
 
 gulp.task('watch', function() {
   gulp.watch(['src/content/**'],['content']);
@@ -99,5 +100,23 @@ gulp.task('watch', function() {
   gulp.watch(['src/templates/**'],['templates'])
   gulp.watch(paths.scripts,['scripts']);
 });
+
+gulp.task('compile', function() {
+  gulp.src('build/**/*.js')
+      .pipe(guglify())
+      .pipe(gulp.dest('dist'))
+  gulp.src('build/**/*.css')
+      .pipe(gmin({keepSpecialComments: 0}))
+      .pipe(gulp.dest('dist'))
+  gulp.src('build/**/*.html')
+      .pipe(gulp.dest('dist'))
+});
+
+gulp.task('deploy', function () {
+    gulp.src("dist/**/*")
+        .pipe(gpages());
+});
+
+gulp.task('release', ['build', 'compile', 'deploy'])
 
 gulp.task('default',['connect','build','watch']);
