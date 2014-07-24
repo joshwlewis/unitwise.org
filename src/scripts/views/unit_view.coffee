@@ -4,7 +4,8 @@ class Unitwise.UnitView extends Marionette.ItemView
     code: "select[name='code']:first"
 
   modelEvents:
-    "change:code": "selectCode"
+    "change:code": "selectCode removeUiError"
+    "invalid":     "addUiError"
 
   onRender: ->
     @initSelectize()
@@ -28,19 +29,20 @@ class Unitwise.UnitView extends Marionette.ItemView
     selectize.refreshOptions(false)
 
   onUiCodeChange: (val) =>
-    if @valid()
-      unit = Unitwise.units.findWhere(code: val)
+    if unit = Unitwise.units.findWhere(code: val)
       @model.set(_.clone(unit.attributes))
+    else
+      @model.clear()
 
   selectCode: ->
     if (val = @model.get "code") != @selectize.getValue()
       @selectize.setValue(val)
 
-  valid: ->
-    if @ui.code[0].checkValidity()
-      @ui.code.parent().removeClass('has-error')
-      true
-    else
+  addUiError: (model, error, options) ->
+    if error.code
       @ui.code.parent().addClass('has-error')
-      false
+
+  removeUiError: (model, value, options) ->
+    @ui.code.parent().removeClass('has-error')
+
 

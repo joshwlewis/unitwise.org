@@ -118,10 +118,10 @@ gulp.task('build',['templates','build-content','build-styles','build-scripts']);
 gulp.task('compile', ['templates','compile-content','compile-styles','compile-scripts']);
 
 gulp.task('watch', function() {
-  gulp.watch(['src/content/**'],['content']);
-  gulp.watch(['src/styes/**'],['styles']);
   gulp.watch(['src/templates/**'],['templates'])
-  gulp.watch(paths.scripts,['scripts']);
+  gulp.watch(['src/content/**'],['build-content']);
+  gulp.watch(['src/styes/**'],['build-styles']);
+  gulp.watch(paths.scripts,['build-scripts']);
 });
 
 gulp.task('deploy', function () {

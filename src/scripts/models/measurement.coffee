@@ -7,7 +7,7 @@ class Unitwise.Measurement extends Unitwise.Model
 
   validate: (attrs, opts) ->
     errs = super
-    unless _.isNumber(parseFloat(attrs?.value))
+    if isNaN(attrs?.value)
       errs ||= {}
       errs.value = "must be a number."
     errs

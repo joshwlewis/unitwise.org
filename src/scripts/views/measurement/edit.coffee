@@ -4,6 +4,10 @@ class Unitwise.Measurement.Edit extends Marionette.Layout
   regions:
     unitContainer:  '.unit-container:first'
 
+  modelEvents:
+    'change:value':  'removeUiError'
+    'invalid':       'addUiError'
+
   ui:
     value: "input[name='value']:first"
 
@@ -19,14 +23,13 @@ class Unitwise.Measurement.Edit extends Marionette.Layout
 
   onUiValueChanged: (evt) ->
     @_OnUiValueChanged ||= (
-      fn = -> @model.set(value: $(evt.target).val()) if @valid()
+      fn = -> @model.set(value: $(evt.target).val())
       _.throttle(fn, 750))
     @_OnUiValueChanged(evt)
 
-  valid: ->
-    if @ui.value[0].checkValidity()
-      @ui.value.parent().removeClass("has-error")
-      true
-    else
-      @ui.value.parent().addClass("has-error")
-      false
+  addUiError: (model, err, opts) ->
+    if err.value
+      @ui.value.parent().addClass('has-error')
+
+  removeUiError: (model, value, opts) ->
+    @ui.value.parent().removeClass('has-error')

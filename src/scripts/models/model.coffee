@@ -38,9 +38,9 @@ class Unitwise.Model extends Backbone.Model
       unless _.isObject(value)
         errs ||= {}
         errs[key] = 'is required.'
-      else if err = this[key]?.validate(value)
+      else unless this[key]?.isValid()
         errs ||= {}
-        errs[key] = err
+        errs[key] = this[key].validationError
     errs
 
 

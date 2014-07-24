@@ -17,6 +17,6 @@ class Unitwise.Unit extends Unitwise.Model
     "#{attrs.name} (#{aliases})"
 
   validate: (attrs, opts) ->
-    unless _.isString(attrs?.code)
-      {code: "must be a string"}
+    if _.isEmpty(attrs?.code)
+      {code: "must be a unit code"}
 
