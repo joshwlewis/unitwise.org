@@ -50,7 +50,7 @@ gulp.task('clean', function() {
   gdel(['build/**/*', 'dist/**/*'], function(){})
 });
 
-gulp.task('scripts', function() {
+gulp.task('build-scripts', function() {
   gulp.src(paths.scripts)
       .pipe(gmaps.init())
       .pipe(gif(/[.]coffee$/, gcoffee({ bare: true }).on('error', function(err) {
@@ -60,6 +60,14 @@ gulp.task('scripts', function() {
       .pipe(gmaps.write())
       .pipe(gulp.dest('build/scripts'))
       .pipe(gconnect.reload());
+});
+
+gulp.task('compile-scripts', function() {
+  gulp.src(paths.scripts)
+      .pipe(gif(/[.]coffee$/, gcoffee({ bare: true })))
+      .pipe(gconcat('application.js'))
+      .pipe(guglify())
+      .pipe(gulp.dest('dist/scripts'))
 });
 
 // Precompile jade templates into a JST
@@ -72,7 +80,7 @@ gulp.task('templates', function(){
     .pipe(gulp.dest('tmp/'));
 });
 
-gulp.task('styles', function() {
+gulp.task('build-styles', function() {
   gulp.src(['src/styles/**/*.{css,less}'])
       .pipe(gmaps.init())
       .pipe(gless().on('error', function(err){
@@ -83,7 +91,14 @@ gulp.task('styles', function() {
       .pipe(gconnect.reload());
 });
 
-gulp.task('content', function() {
+gulp.task('compile-styles', function() {
+  gulp.src(['src/styles/**/*.{css,less}'])
+      .pipe(gless())
+      .pipe(gmin({keepSpecialComments: false}))
+      .pipe(gulp.dest('dist/styles'))
+});
+
+gulp.task('build-content', function() {
   gulp.src(['src/content/**/*.jade', '!src/content/layouts/**'])
       .pipe(gjade().on('error', function(err){
         gutil.log(gutil.colors.red(err))
@@ -92,7 +107,15 @@ gulp.task('content', function() {
       .pipe(gconnect.reload());
 });
 
-gulp.task('build',['content','styles','templates','scripts']);
+gulp.task('compile-content', function() {
+  gulp.src(['src/content/**/*.jade', '!src/content/layouts/**'])
+      .pipe(gjade())
+      .pipe(gulp.dest('dist'))
+});
+
+
+gulp.task('build',['templates','build-content','build-styles','build-scripts']);
+gulp.task('compile', ['templates','compile-content','compile-styles','compile-scripts']);
 
 gulp.task('watch', function() {
   gulp.watch(['src/content/**'],['content']);
@@ -105,4 +128,5 @@ gulp.task('deploy', function () {
     gulp.src("dist/**/*")
         .pipe(gpages());
 });
+
 gulp.task('default',['connect','build','watch']);
