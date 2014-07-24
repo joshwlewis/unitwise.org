@@ -5,6 +5,8 @@ class Unitwise.Model extends Backbone.Model
   constructor: (attrs, opts) ->
     super
     @throttledSet = _.throttle(@set, 500)
+
+  initialize: (attrs, opts) ->
     @baws = opts?.baws
     for swab_key, swab_klass of @swabs
       attrs ||= {}
@@ -29,4 +31,16 @@ class Unitwise.Model extends Backbone.Model
     @set(attrs, belay: true)
     for key, value of attrs when key of @swabs
       this[key]?.setSwabs(_.clone(value))
+
+  validate: (attrs, opts) ->
+    errs = null
+    for key, value of attrs when key of @swabs
+      unless _.isObject(value)
+        errs ||= {}
+        errs[key] = 'is required.'
+      else if err = this[key]?.validate(value)
+        errs ||= {}
+        errs[key] = err
+    errs
+
 

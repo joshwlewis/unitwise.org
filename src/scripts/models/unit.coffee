@@ -16,3 +16,7 @@ class Unitwise.Unit extends Unitwise.Model
     aliases = _([attrs.code, attrs.symbol]).compact().uniq().join(", ")
     "#{attrs.name} (#{aliases})"
 
+  validate: (attrs, opts) ->
+    unless _.isString(attrs?.code)
+      {code: "must be a string"}
+
