@@ -1,3 +1,23 @@
 @font-size-base: 24px;
 @import "bower_components/bootstrap/less/bootstrap";
 @import "bower_components/selectize/dist/less/selectize.bootstrap3";
+
+form#unitwise {
+  margin: 24px 0;
+  .calculation {
+    padding: 15px 15px 0 15px;
+    background: rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 7px;
+  }
+
+  .result-container {
+    margin: 15px -16px 0 -16px;
+    min-height: 56px;
+    &:empty {
+      border-radius: 7px;
+      background: rgba(0,0,0,0.02);
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+  }
+}

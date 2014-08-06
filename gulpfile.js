@@ -120,7 +120,7 @@ gulp.task('compile', ['templates','compile-content','compile-styles','compile-sc
 gulp.task('watch', function() {
   gulp.watch(['src/templates/**'],['templates'])
   gulp.watch(['src/content/**'],['build-content']);
-  gulp.watch(['src/styes/**'],['build-styles']);
+  gulp.watch(['src/styles/**'],['build-styles']);
   gulp.watch(paths.scripts,['build-scripts']);
 });
 

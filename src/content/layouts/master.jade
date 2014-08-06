@@ -5,7 +5,7 @@ html.no-js(lang='en')
     meta(charset="utf-8")
     meta(name="description" content="Unitwise is a Ruby library for working with physical quantities and units of measure. It supports conversion, comparison and arithmetic on wide range of units.")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    title Unitwise - Physical Quantities and Units of Measurement Library for Ruby
+    title Unitwise - Units of Measure and Physical Quantities Calculator
 
     link(rel='stylesheet', href='styles/application.css')
 
@@ -13,14 +13,15 @@ html.no-js(lang='en')
 
   body
     .container
-      h1 Unitwise
-      p.lead Physical Quanitites and Units of Measurement Library for Ruby
-      hr
-      <!--[if lt IE 8]>
-      p.browsehappy
-        | You are using an <strong>outdated</strong> browser.
-        | Please <a href="http://browsehappy.com/">upgrade your browser</a>
-        | to improve your experience.
-      <![endif]-->
+      .row
+        .col-md-8.col-md-offset-2
+          h1 Unitwise
+          p.lead Units of Measure and Physical Quantity Calculator
+          <!--[if lt IE 9]>
+          p.browsehappy
+            | You are using an <strong>outdated</strong> browser.
+            | Please <a href="http://browsehappy.com/">upgrade your browser</a>
+            | to improve your experience.
+          <![endif]-->
 
-      block content
+          block content

@@ -63,4 +63,3 @@ class Unitwise.CalculationView extends Marionette.Layout
 
   onModelLeftChanged: (model, value, options) ->
     @renderRight() if value.unit
-
