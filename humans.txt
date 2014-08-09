@@ -1,0 +1,10 @@
+/* TEAM */
+Author: Josh W Lewis
+Site: joshwlewis.com
+Twitter: @joshwlewis
+Location: Memphis, TN
+
+/* SITE */
+Standards: HTML5, CSS3
+Components: Modernizr, Lo-dash, Backbone, Backbone.Marionette, Bootstrap
+Software: Ruby, Unitwise, Sinatra
