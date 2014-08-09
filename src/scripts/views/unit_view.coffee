@@ -18,7 +18,8 @@ class Unitwise.UnitView extends Marionette.ItemView
         valueField:  'code'
         labelField:  'description'
         searchField: ['name','code','symbol']
-        options:     Unitwise.units.withDim(@options.dim)
+        options:     Unitwise.units.withDim(@options.dim),
+        selectOnTab: true
       @selectize = @ui.code[0].selectize
       @listenTo @selectize, 'change', @onUiCodeChange
 

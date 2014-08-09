@@ -50,6 +50,16 @@ gulp.task('clean', function() {
   gdel(['build/**/*', 'dist/**/*'], function(){})
 });
 
+gulp.task('build-images', function() {
+  gulp.src('src/images/**/*')
+      .pipe(gulp.dest('build/images'))
+});
+
+gulp.task('compile-images', function() {
+  gulp.src('src/images/**/*')
+      .pipe(gulp.dest('dist/images'))
+});
+
 gulp.task('build-scripts', function() {
   gulp.src(paths.scripts)
       .pipe(gmaps.init())
@@ -114,11 +124,12 @@ gulp.task('compile-content', function() {
 });
 
 
-gulp.task('build',['templates','build-content','build-styles','build-scripts']);
-gulp.task('compile', ['templates','compile-content','compile-styles','compile-scripts']);
+gulp.task('build',['templates','build-images','build-content','build-styles','build-scripts']);
+gulp.task('compile', ['templates','compile-images','compile-content','compile-styles','compile-scripts']);
 
 gulp.task('watch', function() {
-  gulp.watch(['src/templates/**'],['templates'])
+  gulp.watch(['src/images/**'],['build-images']);
+  gulp.watch(['src/templates/**'],['templates']);
   gulp.watch(['src/content/**'],['build-content']);
   gulp.watch(['src/styles/**'],['build-styles']);
   gulp.watch(paths.scripts,['build-scripts']);

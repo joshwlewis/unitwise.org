@@ -2,22 +2,41 @@
 @import "bower_components/bootstrap/less/bootstrap";
 @import "bower_components/selectize/dist/less/selectize.bootstrap3";
 
+header#masthead {
+  margin-top: 20px;
+  .logo {
+    display: inline-block;
+    margin-right: 10px;
+    img {
+      max-height: 85px;
+    }
+  }
+  .name {
+    display: inline-block;
+  }
+}
 form#unitwise {
-  margin: 24px 0;
   .calculation {
     padding: 15px 15px 0 15px;
     background: rgba(0,0,0,0.02);
     border: 1px solid rgba(0,0,0,0.1);
     border-radius: 7px;
+    .calculation {
+      border: none;
+    }
   }
 
   .result-container {
-    margin: 15px -16px 0 -16px;
     min-height: 56px;
+    margin: 0 -15px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: none;
     &:empty {
-      border-radius: 7px;
       background: rgba(0,0,0,0.02);
-      border-top: 1px solid rgba(0,0,0,0.1);
     }
   }
+}
+
+footer.info {
+  margin: 30px 0;
 }
