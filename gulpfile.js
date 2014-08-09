@@ -50,6 +50,16 @@ gulp.task('clean', function() {
   gdel(['build/**/*', 'dist/**/*'], function(){})
 });
 
+gulp.task('build-extras', function() {
+  gulp.src('src/extras/**/*')
+      .pipe(gulp.dest('build'))
+});
+
+gulp.task('compile-extras', function() {
+  gulp.src('src/extras/**/*')
+      .pipe(gulp.dest('compile'))
+});
+
 gulp.task('build-images', function() {
   gulp.src('src/images/**/*')
       .pipe(gulp.dest('build/images'))
@@ -124,8 +134,8 @@ gulp.task('compile-content', function() {
 });
 
 
-gulp.task('build',['templates','build-images','build-content','build-styles','build-scripts']);
-gulp.task('compile', ['templates','compile-images','compile-content','compile-styles','compile-scripts']);
+gulp.task('build',['templates','build-extras','build-images','build-content','build-styles','build-scripts']);
+gulp.task('compile', ['templates','compile-extras','compile-images','compile-content','compile-styles','compile-scripts']);
 
 gulp.task('watch', function() {
   gulp.watch(['src/images/**'],['build-images']);
