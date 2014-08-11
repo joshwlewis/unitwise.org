@@ -57,7 +57,7 @@ gulp.task('build-extras', function() {
 
 gulp.task('compile-extras', function() {
   gulp.src('src/extras/**/*')
-      .pipe(gulp.dest('compile'))
+      .pipe(gulp.dest('dist'))
 });
 
 gulp.task('build-images', function() {
