@@ -1,4 +1,6 @@
 class Unitwise.Unit extends Unitwise.Model
+  url: -> "http://api.unitwise.org/units/#{ @get 'code' }"
+
   defaults:
     code:        null
     name:        null

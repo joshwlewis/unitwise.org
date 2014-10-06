@@ -20,8 +20,15 @@ class Unitwise.UnitView extends Marionette.ItemView
         searchField: ['name','code','symbol']
         options:     Unitwise.units.withDim(@options.dim),
         selectOnTab: true
+        load: (query, callback) =>
+          new Unitwise.Units().fetch
+            data: { q: query }
+            success: (collection) =>
+              console.log(@, @options)
+              callback(collection.withDim(@options.dim))
       @selectize = @ui.code[0].selectize
-      @listenTo @selectize, 'change', @onUiCodeChange
+      @listenTo @selectize, 'item_add', @onItemSelected
+      @listenTo @selectize, 'item_remove', @onItemDeselected
 
   updateOptions: ->
     selectize = @ui.code[0].selectize
@@ -29,11 +36,14 @@ class Unitwise.UnitView extends Marionette.ItemView
       selectize.addOption(opt)
     selectize.refreshOptions(false)
 
-  onUiCodeChange: (val) =>
-    if unit = Unitwise.units.findWhere(code: val)
-      @model.set(_.clone(unit.attributes))
-    else
-      @model.clear()
+
+  onItemSelected: (val) =>
+    unit = new Unitwise.Unit(code: val)
+    unit.fetch().always =>
+        @model.set(_.clone(unit.attributes))
+
+  onItemDeselected: =>
+    @model.clear()
 
   selectCode: ->
     if (val = @model.get "code") != @selectize.getValue()
