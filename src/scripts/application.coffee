@@ -23,7 +23,7 @@ Unitwise.addInitializer ->
 
 Unitwise.on "initialize:after", ->
   Unitwise.units = new Unitwise.Units()
-  Unitwise.units.fetch success: -> Unitwise.vent.trigger "units:updated"
+  Unitwise.units.fetch()
   Backbone.history?.start()
 
 $ -> Unitwise.start()

@@ -10,7 +10,7 @@ class Unitwise.UnitView extends Marionette.ItemView
   onRender: ->
     @initSelectize()
     @selectCode()
-    @listenTo Unitwise.vent, "units:updated", @updateOptions
+    @listenTo Unitwise.units, "sync", @updateOptions
 
   initSelectize: ->
     unless @selectize
@@ -24,8 +24,8 @@ class Unitwise.UnitView extends Marionette.ItemView
           new Unitwise.Units().fetch
             data: { q: query }
             success: (collection) =>
-              console.log(@, @options)
-              callback(collection.withDim(@options.dim))
+              Unitwise.units.add(collection.models)
+              callback(Unitwise.units.withDim(@options.dim))
       @selectize = @ui.code[0].selectize
       @listenTo @selectize, 'item_add', @onItemSelected
       @listenTo @selectize, 'item_remove', @onItemDeselected
@@ -35,7 +35,6 @@ class Unitwise.UnitView extends Marionette.ItemView
     Unitwise.units.withDim(@options.dim).forEach (opt) ->
       selectize.addOption(opt)
     selectize.refreshOptions(false)
-
 
   onItemSelected: (val) =>
     unit = new Unitwise.Unit(code: val)
