@@ -7,10 +7,13 @@ class Unitwise.UnitView extends Marionette.ItemView
     "change:code": "selectCode removeUiError"
     "invalid":     "addUiError"
 
+  initialize: ->
+    @listenTo Unitwise.units, "sync", @updateOptions
+    super
+
   onRender: ->
     @initSelectize()
     @selectCode()
-    @listenTo Unitwise.units, "sync", @updateOptions
 
   initSelectize: ->
     unless @selectize
@@ -37,9 +40,8 @@ class Unitwise.UnitView extends Marionette.ItemView
     selectize.refreshOptions(false)
 
   onItemSelected: (val) =>
-    unit = new Unitwise.Unit(code: val)
-    unit.fetch().always =>
-        @model.set(_.clone(unit.attributes))
+    unit = Unitwise.units.findWhere(code: val)
+    @model.set(_.clone(unit.attributes))
 
   onItemDeselected: =>
     @model.clear()
